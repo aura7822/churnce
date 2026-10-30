@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Churnce Observer settings</title><link rel="stylesheet" href="ui.css"><style>main{max-width:560px;margin:0 auto}</style></head>
+<body><main>
+  <h1>Churnce Observer settings</h1>
+  <form class="card" id="conn">
+    <label>Backend URL<input id="backend" type="url" required placeholder="https://churnce.example.com"></label>
+    <label>Ingest key<input id="key" type="password" autocomplete="off" placeholder="chn_live_…"></label>
+    <button type="submit">Save connection</button>
+    <p class="note">Create or rotate the key via the API (POST /config/rotate-key). It can only submit events; it cannot read data or call AI services.</p>
+  </form>
+  <form class="card" id="auth">
+    <label>Authorise a website<input id="origin" required placeholder="https://shop.example.com"></label>
+    <button type="submit">Authorise this site</button>
+    <p class="note">Your browser will ask for permission. Only authorise sites you own or are permitted to monitor, and make sure visitors are informed where the law requires consent.</p>
+    <ul id="origins"></ul>
+  </form>
+  <section class="card" id="mail" aria-label="Customer emails">
+    <h2>Customer emails</h2>
+    <p class="note">Win-back emails drafted from your RAG findings, one per issue. Edit them here, then send. The backend delivers them: customer addresses and mail credentials never reach this extension.</p>
+    <form id="login" class="stack">
+      <label>Operator email<input id="opEmail" type="email" autocomplete="username" placeholder="marketing@yourcompany.com"></label>
+      <label>Password<input id="opPass" type="password" autocomplete="current-password"></label>
+      <button type="submit">Sign in</button>
+      <p class="note">Needs an administrator or marketing operator account. The session lives in memory and ends when the browser closes.</p>
+    </form>
+    <div id="signed" hidden>
+      <div class="row"><span id="who"></span><button type="button" class="secondary" id="logout">Sign out</button></div>
+    </div>
+    <label class="check"><input id="retrieve" type="checkbox"> Retrieve email drafts from Churnce</label>
+    <label class="check"><input id="auto" type="checkbox"> Send eligible emails automatically</label>
+    <label>Wait before auto-sending (time to edit)
+      <select id="delay"><option value="0">No wait</option><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="30">30 minutes</option><option value="60">1 hour</option></select>
+    </label>
+    <p class="note">Auto-send only picks up drafts where every policy check passed (consent, not suppressed, contact frequency, verified fix, approved claims) and never customers held out for measurement. Each send is audit-logged.</p>
+    <div class="row"><strong>Drafts</strong><button type="button" class="secondary" id="refresh">Refresh</button></div>
+    <p id="mailStatus" class="note"></p>
+    <div id="drafts" class="stack"></div>
+  </section>
+  <p id="msg" role="status" class="note"></p>
+</main><script type="module" src="settings.js"></script></body></html>

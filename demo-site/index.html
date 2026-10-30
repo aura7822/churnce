@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northwind Goods · demo shop</title>
+<style>
+  :root { --bg:#eef1f7; --ink:#1b2233; --teal:#14b8a6; --amber:#f59e0b; --red:#e11d48; }
+  * { box-sizing: border-box; } body { margin:0; font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--bg); color:var(--ink); }
+  header { display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px clamp(14px,4vw,40px); flex-wrap:wrap; }
+  .logo { font-weight:800; font-size:20px; letter-spacing:-.02em; } nav { display:flex; gap:8px; flex-wrap:wrap; }
+  nav a { padding:8px 14px; border-radius:14px; color:var(--ink); text-decoration:none; background:var(--bg); box-shadow:5px 5px 11px #cdd3e0,-5px -5px 11px #fff; }
+  nav a[aria-current="page"] { box-shadow:inset 4px 4px 9px #cdd3e0, inset -4px -4px 9px #fff; font-weight:700; }
+  main { padding:8px clamp(14px,4vw,40px) 80px; max-width:980px; margin:0 auto; display:grid; gap:20px; }
+  .tiles { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); }
+  .tile { border-radius:26px; padding:18px; background:linear-gradient(150deg,#fff,#e3e8f3); box-shadow:inset 0 3px 0 #fff, 10px 14px 24px -10px #b8c0d4; display:grid; gap:8px; }
+  .tile b { font-size:18px; } .price { font-weight:800; }
+  button, .btn { border:0; border-radius:16px; padding:12px 18px; font:700 15px inherit; cursor:pointer; color:#04201c; background:linear-gradient(150deg,#7df3e1,var(--teal)); box-shadow:inset 0 2px 0 rgba(255,255,255,.6), inset 0 -5px 8px rgba(0,0,0,.15), 0 10px 18px -8px rgba(20,184,166,.7); }
+  button.alt { background:linear-gradient(150deg,#fde68a,var(--amber)); box-shadow:inset 0 2px 0 rgba(255,255,255,.6), inset 0 -5px 8px rgba(0,0,0,.15); }
+  button:disabled { opacity:.6; cursor:progress; } input { padding:11px 14px; border-radius:14px; border:0; font:inherit; background:var(--bg); box-shadow:inset 4px 4px 9px #cdd3e0, inset -4px -4px 9px #fff; width:100%; }
+  .alert { padding:12px 16px; border-radius:14px; background:#ffe4e9; border:2px solid var(--red); color:#7f1030; font-weight:600; }
+  .ok { padding:12px 16px; border-radius:14px; background:#d9fbe9; border:2px solid #16a34a; color:#14532d; font-weight:600; }
+  .panel { position:fixed; right:14px; bottom:14px; max-width:280px; padding:14px; border-radius:20px; background:#1b2233; color:#e8eef8; box-shadow:0 18px 36px -12px #0007; font-size:13px; display:grid; gap:8px; }
+  .panel b { color:#7df3e1; } .row { display:flex; gap:8px; flex-wrap:wrap; }
+  :focus-visible { outline:3px solid var(--teal); outline-offset:2px; }
+</style>
+</head>
+<body>
+<header><div class="logo">Northwind Goods</div>
+  <nav aria-label="Main"><a href="/" data-r>Home</a><a href="/products" data-r>Products</a><a href="/search" data-r>Search</a><a href="/cart" data-r>Cart</a><a href="/checkout" data-r>Checkout</a></nav></header>
+<main id="view" tabindex="-1"></main>
+
+<aside class="panel" aria-label="Demo controls">
+  <div><b>Demo controls</b> · checkout is <b id="health"></b></div>
+  <div class="row"><button class="alt" id="break" type="button">Break checkout</button><button class="alt" id="fix" type="button">Deploy fix</button></div>
+  <span>This shop is a controlled test site. Authorise <code>localhost</code> in the extension to observe it.</span>
+</aside>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const view = $("#view");
+const healthy = () => { try { return localStorage.getItem("shop.healthy") === "1"; } catch { return false; } };
+const setHealthy = (v) => { try { localStorage.setItem("shop.healthy", v ? "1" : "0"); } catch {} paintHealth(); };
+const paintHealth = () => { $("#health").textContent = healthy() ? "healthy" : "failing"; };
+// Explicit application events are preferred over generic observation: the extension forwards only whitelisted fields.
+const track = (d) => window.dispatchEvent(new CustomEvent("churnce:event", { detail: JSON.stringify(d) }));
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+const PRODUCTS = [["Trail backpack", 64], ["Insulated bottle", 22], ["Merino socks", 14], ["Headlamp", 31]];
+const tile = ([n, p]) => `<div class="tile"><b>${n}</b><span class="price">$${p}</span><button type="button" data-add>Add to cart</button></div>`;
+
+const pages = {
+  "/": () => `<h1>Gear for long days outside</h1><p>Free returns for 30 days.</p><div class="tiles">${PRODUCTS.slice(0, 2).map(tile).join("")}</div>`,
+  "/products": () => `<h1>Products</h1><div class="tiles">${PRODUCTS.map(tile).join("")}</div>`,
+  "/search": () => `<h1>Search</h1><form id="sf" role="search"><input data-churnce-search aria-label="Search products" placeholder="Try “tent”, “bottle”…"></form><div id="results" aria-live="polite"></div>`,
+  "/cart": () => `<h1>Your cart</h1><div class="tile"><b>Trail backpack</b><span class="price">$64</span></div><p><a class="btn" href="/checkout" data-r style="display:inline-block;text-decoration:none">Go to checkout</a></p>`,
+  "/checkout": () => `<h1>Checkout</h1><div class="tile"><b>Total $64</b><div id="msg"></div>
+     <button id="pay" type="button" data-churnce-action="primary_action" data-churnce-label="Pay now">Pay now</button></div>`,
+};
+
+function render() {
+  const path = location.pathname.replace(/\/$/, "") || "/";
+  view.innerHTML = (pages[path] || pages["/"])();
+  document.querySelectorAll("nav a").forEach((a) => { if (a.getAttribute("href") === path) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  if (path === "/checkout") document.documentElement.dataset.churnceWorkflow = "checkout"; else delete document.documentElement.dataset.churnceWorkflow;
+  view.focus();
+}
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a[data-r]");
+  if (a) { e.preventDefault(); history.pushState({}, "", a.getAttribute("href")); render(); }
+});
+window.addEventListener("popstate", render);
+
+view.addEventListener("click", async (e) => {
+  const pay = e.target.closest("#pay");
+  if (pay) {
+    const msg = $("#msg"); msg.innerHTML = ""; pay.disabled = true;
+    const started = performance.now();
+    if (healthy()) {
+      await wait(420);
+      track({ type: "click", element_category: "primary_action", outcome: "success", response_time_ms: Math.round(performance.now() - started), meta: { endpoint: "/api/payments/charge" } });
+      track({ type: "workflow_completed", outcome: "success" });
+      delete document.documentElement.dataset.churnceWorkflow;
+      msg.innerHTML = `<div class="ok" role="status">Payment received. Thank you!</div>`;
+    } else {
+      await wait(4800);
+      const rt = Math.round(performance.now() - started);
+      track({ type: "interaction_failure", element_category: "primary_action", outcome: "timeout", response_time_ms: rt, meta: { endpoint: "/api/payments/charge", http_status: 504 } });
+      msg.innerHTML = `<div class="alert" role="alert" data-churnce-error="PAYMENT_TIMEOUT">We couldn’t process your payment. Please try again.</div>`;
+    }
+    pay.disabled = false;
+  }
+});
+view.addEventListener("submit", (e) => {
+  if (e.target.id !== "sf") return;
+  e.preventDefault();
+  const q = e.target.querySelector("input").value.trim();
+  $("#results").innerHTML = `<p>No products matched “${q.replace(/[<>&]/g, "")}”.</p>`;
+  track({ type: "search_no_results", outcome: "no_results" });
+});
+
+$("#break").onclick = () => setHealthy(false);
+$("#fix").onclick = () => setHealthy(true);
+paintHealth(); render();
+</script>
+</body>
+</html>

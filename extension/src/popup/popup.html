@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=320"><meta name="theme-color" content="#FAF2A0"><title>Churnce Observer</title><link rel="stylesheet" href="ui.css"><style>body{width:320px}</style></head>
+<body><main>
+  <div class="row"><h1>Churnce Observer</h1><button id="themeToggle" class="secondary theme-toggle" type="button">Dark mode</button></div>
+  <div class="row"><span id="state"><i class="led" id="led"></i><span id="stateText">Off</span></span></div>
+  <div class="card">
+    <div class="row"><span>Monitoring</span><button id="toggle" class="secondary">Turn on</button></div>
+    <p id="sites" class="note"></p>
+    <p id="status" class="note"></p>
+    <p id="queue" class="note"></p>
+  </div>
+  <button id="settings" class="secondary">Settings and authorised sites</button>
+  <p class="note">Only sites you authorise are observed. No keystrokes, passwords or form contents are collected.</p>
+</main><script type="module" src="popup.js"></script></body></html>

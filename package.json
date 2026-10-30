@@ -1,0 +1,19 @@
+{
+  "name": "churnce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.11",
+    "drizzle-orm": "^0.45.4"
+  }
+}

@@ -1,0 +1,98 @@
+[
+ {
+  "collection": "product_knowledge",
+  "source_ref": "doc_checkout_guide",
+  "title": "Checkout flow: how payment confirmation works",
+  "body": "The checkout page submits the order to the payments service at /api/payments/charge when the customer presses the primary Pay now button. The service must respond within 3 seconds; the page shows a spinner and disables the button while waiting. If the response does not arrive, the customer can press Pay now again, which re-submits the order. Idempotency keys are not yet enforced on retries, so repeated presses can create duplicate authorisation attempts."
+ },
+ {
+  "collection": "product_knowledge",
+  "source_ref": "doc_onboarding_guide",
+  "title": "Onboarding: profile setup step",
+  "body": "New customers finish onboarding by saving a profile in step 2 of 3. The page calls /api/onboarding/profile. Customers who have not saved a profile cannot see personalised recommendations or saved carts. Onboarding completion is the main activation milestone."
+ },
+ {
+  "collection": "product_knowledge",
+  "source_ref": "doc_search_limits",
+  "title": "Search: known limitations",
+  "body": "Catalogue search matches product titles only. Size and fit attributes such as wide fit are not indexed, so queries like wide waterproof boots return no results even when matching products exist. A fit-attribute index is on the roadmap but not scheduled."
+ },
+ {
+  "collection": "product_knowledge",
+  "source_ref": "doc_release_notes_2_14",
+  "title": "Release notes 2.14",
+  "body": "Release 2.14 moved payment authorisation to the new payments gateway and reduced the gateway connection pool from 40 to 10 connections. Release 2.14 also changed the onboarding profile form to validate addresses server-side."
+ },
+ {
+  "collection": "engineering",
+  "source_ref": "log_000219",
+  "title": "Payments gateway latency alert",
+  "body": "Alert: /api/payments/charge p95 latency 4.9s and 504 gateway timeout rate 31 percent after release 2.14. Connection pool exhausted: 10 of 10 connections in use, 214 requests queued. Upstream gateway healthy. Likely cause is pool saturation under normal evening traffic."
+ },
+ {
+  "collection": "engineering",
+  "source_ref": "issue_000412",
+  "title": "Issue: intermittent 502 from payments service",
+  "body": "Open issue reported by QA: checkout payment requests intermittently return 502 or time out under load. Reproduces when more than 10 concurrent charge requests arrive. Suspected relation to the connection pool size reduced in release 2.14. Not yet assigned."
+ },
+ {
+  "collection": "engineering",
+  "source_ref": "log_000305",
+  "title": "Onboarding profile endpoint errors",
+  "body": "Error log: /api/onboarding/profile returns HTTP 500 PROFILE_SAVE_FAILED for addresses containing a unit number with a slash. Server-side address validation introduced in release 2.14 throws on that format. Affects new customers on step 2 of onboarding."
+ },
+ {
+  "collection": "engineering",
+  "source_ref": "log_000118",
+  "title": "Search service healthy",
+  "body": "Search service latency normal. Zero-result rate for fit-related queries is 62 percent because fit attributes are not indexed. No errors recorded."
+ },
+ {
+  "collection": "support",
+  "source_ref": "tkt_88123",
+  "title": "Support ticket: cannot pay",
+  "body": "Customer reports pressing Pay now several times and the page spins and times out. They are afraid of being charged twice. Agent confirmed payment gateway timeouts that evening and advised retrying later. Customer abandoned the order."
+ },
+ {
+  "collection": "support",
+  "source_ref": "tkt_88207",
+  "title": "Support ticket: stuck on profile step",
+  "body": "New customer cannot complete onboarding, the profile save fails with an error. Agent worked around it by editing the address without the unit slash. Recurring complaint this week."
+ },
+ {
+  "collection": "support",
+  "source_ref": "tkt_87990",
+  "title": "Support ticket: search finds nothing",
+  "body": "Customer searching for wide fit waterproof boots receives no results although the shop sells them. Asked for a better way to filter by fit."
+ },
+ {
+  "collection": "intervention_memory",
+  "source_ref": "int_hist_0007",
+  "title": "Past intervention: checkout timeouts fixed by raising pool size",
+  "body": "Previous checkout timeout incident in a prior quarter. Action: engineering investigation. Fix: increased payment connection pool and added idempotency keys. Outcome: checkout completion rose from 58 percent to 71 percent over two weeks, before and after comparison, no holdout group, so causation is not established. A benefit-focused return email to interrupted customers was sent afterwards."
+ },
+ {
+  "collection": "intervention_memory",
+  "source_ref": "int_hist_0011",
+  "title": "Past intervention: discount email during an unresolved outage",
+  "body": "A discount campaign was sent while an onboarding defect was still open. Unsubscribes doubled and activation did not improve. Lesson: suppress promotional campaigns until the underlying issue is resolved and verified."
+ },
+ {
+  "collection": "business_policy",
+  "source_ref": "pol_comms_001",
+  "title": "Communication policy",
+  "body": "Customer emails require opt-in consent and must respect suppression and unsubscribe status. No customer is contacted more than once in seven days. Recovery messages must emphasise the improved experience and must not describe internal technical incidents or defects. Only claims listed as approved on a verified resolution may be used."
+ },
+ {
+  "collection": "business_policy",
+  "source_ref": "pol_escalation_002",
+  "title": "Escalation and approval policy",
+  "body": "External actions such as sending email or changing production systems always require human approval. Engineering investigations for checkout and registration failures are treated as high priority."
+ },
+ {
+  "collection": "business_policy",
+  "source_ref": "pol_retention_003",
+  "title": "Retention policy",
+  "body": "Raw events and journey chunks are retained for the configured retention period and then deleted together with their embeddings. Audit records are kept for one year and contain no customer content."
+ }
+]

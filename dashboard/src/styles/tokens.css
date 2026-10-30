@@ -1,0 +1,97 @@
+/* ───────────────────────── Design tokens ─────────────────────────
+   Palette: muted sage #A5A79B · warm cream #E8D2B5 · deep burgundy #590907.
+   Everything else is a tint or shade of those three, so surfaces blend rather than clash.
+
+   Surface languages (all square-cornered, none glowing):
+   · neumorphic  → soft inset wells and pressed states
+   · clay        → KPI tiles: lit top edge, shaded base
+   · brutalist   → hard offset shadows on cards that need attention
+   · skeuomorphic→ the countdown dial and toggles
+   The ONE glowing element is the database-activity neon in the top bar (see .db-neon).
+
+   Legacy tone names (teal, amber, blue, red, green, violet) are kept as component props so existing
+   markup keeps working; they now map to palette-derived colours, noted beside each token. */
+:root {
+  interpolate-size: allow-keywords; /* lets the sidebar animate to its max-content width (Chromium) */
+
+  --cream: #e8d2b5; --cream-hi: #f3e6d0; --cream-lo: #dcc4a3;
+  --sage: #a5a79b;  --sage-hi: #c2c4b9;  --sage-lo: #8a8c80;
+  --wine: #590907;  --wine-hi: #7a1a16;  --wine-lo: #3a0504; --wine-deep: #240302;
+
+  --bg: var(--cream);
+  --bg-2: var(--cream-lo);          /* inset wells */
+  --surface: var(--cream-hi);       /* cards */
+  --surface-hi: #faf2e2;
+  --line: rgba(89, 9, 7, 0.16);
+  --line-strong: rgba(89, 9, 7, 0.38);
+
+  --ink: #2b0403;                   /* primary text: 12.8:1 on cream, 7.7:1 on sage */
+  --text: var(--ink);
+  --muted: #55372f;                 /* secondary text: use on cream surfaces only */
+  --faint: #62463e;
+
+  /* semantic accents, derived from the palette */
+  --teal: var(--wine);              /* primary accent */
+  --teal-deep: var(--wine-lo);
+  --amber: #b9822f;  --amber-deep: #8a5d17;   /* ochre, from cream */
+  --blue: #5d6455;   --blue-deep: #3d4237;    /* deep sage */
+  --red: #a63a32;    --red-deep: #7a1410;     /* crimson, from burgundy */
+  --green: #4f7a3a;                           /* olive, from sage */
+  --violet: #6b3a52;                          /* plum, from burgundy */
+
+  --accent-text: var(--wine);       /* headings, links, icons that sit on page/card surfaces */
+  --on-light: #2b0403;              /* text on cream / sage / peach fills (stays dark in both themes) */
+  --bar: var(--wine);               /* single-series chart marks */
+  --glass: rgba(232, 210, 181, 0.58);
+  --glass-strong: rgba(243, 230, 208, 0.78);
+  --glass-line: rgba(255, 255, 255, 0.45);
+  --bg-grad: linear-gradient(135deg, #e8d2b5 0%, #e2d2b9 48%, #c5c3b3 100%);
+
+  --paper: var(--cream-hi);
+  --paper-ink: var(--ink);
+
+  /* chart categorical set, validated for CVD separation on cream (every slice is also labelled) */
+  --c1: #a63a32; --c2: #4f9d6a; --c3: #cf9b2e; --c4: #4a79b0;
+
+  --neu-out: 6px 6px 0 rgba(89, 9, 7, 0.14);
+  --neu-out-sm: 3px 3px 0 rgba(89, 9, 7, 0.16);
+  --neu-in: inset 2px 2px 5px rgba(89, 9, 7, 0.22), inset -2px -2px 4px rgba(255, 250, 238, 0.7);
+
+  --neon: #ff3d6e;                  /* database-activity neon only */
+
+  --rail: 58px;
+  --gutter: clamp(14px, 2.2vw, 28px);
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-script: "Great Vibes", "Pinyon Script", "Snell Roundhand", "Brush Script MT", cursive;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ───────── Dark theme: midnight #071317 · yippieya yellow #FAF2A0 · vulcanico #FF4103 ─────────
+   This keeps the app in a midnight palette with orange-red as the accent family and yellow as the highlight. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --cream: #faf2a0; --cream-hi: #fff4bb; --cream-lo: #eedf75;
+  --sage: #183b43; --sage-hi: #24525a; --sage-lo: #0f2b34;
+  --wine: #071317; --wine-hi: #0b1a1d; --wine-lo: #030d10; --wine-deep: #020c10;
+
+  --bg: #071317; --bg-2: #0b1a1d; --surface: #0d2128; --surface-hi: #122c35;
+  --line: rgba(250, 242, 160, 0.18); --line-strong: rgba(250, 242, 160, 0.34);
+  --ink: #effffb; --text: #effffb; --muted: #d7f7ff; --faint: #b8dfe8;
+
+  --teal: #ff4103; --teal-deep: #d93500;
+  --amber: #faf2a0; --amber-deep: #e9dc73; --blue: #ff4103; --blue-deep: #d93500;
+  --red: #ff4103; --red-deep: #d93500; --green: #8fe3c9; --violet: #b9d7ff;
+
+  --accent-text: #faf2a0;
+  --bar: #ff4103;
+  --c1: #ff4103; --c2: #8fe3c9; --c3: #faf2a0; --c4: #ff7d5c;
+  --neu-out: 6px 6px 0 rgba(2, 12, 16, 0.7);
+  --neu-out-sm: 3px 3px 0 rgba(2, 12, 16, 0.7);
+  --neu-in: inset 2px 2px 6px rgba(0, 0, 0, 0.55), inset -2px -2px 4px rgba(250, 242, 160, 0.06);
+  --glass: rgba(7, 19, 23, 0.68);
+  --glass-strong: rgba(13, 33, 40, 0.78);
+  --glass-line: rgba(250, 242, 160, 0.2);
+  --bg-grad: linear-gradient(135deg, #071317 0%, #0c1d23 48%, #122c35 100%);
+}
