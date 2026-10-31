@@ -94,6 +94,10 @@ export interface Retrieval {
 }
 export interface Reasoning {
   provider: string; notes: string[]; latency_ms: number;
+
+  //provider: string; notes: string[]; latency_ms: number;
+  email_draft?: { subject: string; body: string; issue: string; generated_by: string; preview: boolean } | null;
+  
   answer: {
     lifecycle_stage: string; summary: string; recurring_patterns: string[];
     causes: { description: string; kind: "symptom" | "root_cause"; confidence: number; evidence_ids: string[] }[];
