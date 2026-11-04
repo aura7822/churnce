@@ -3,15 +3,15 @@
 # LIFE CYCLE MARKETING PRESENTS : CHURNCE®
 </div>
 
-### 🗸 Positively stabilizes customer(s) churn on enterprise web applications + bug bounty posture
+### 🗸 Positively stabilizes customer(s) churn on enterprise web applications + a bug bounty posture
 <div align ="center">
-<table><tr><td>SOFTWARE VERSION</td><td>3.7.10</td></tr><tr><td>SOFTWARE RELEASE</td><td>EXPERIMENTAL</td></tr><tr><td>PRODUCTION</td><td>STAGING</td></tr></table></div>
+<table><tr><td><strong>SOFTWARE VERSION</strong></td><td>3.7.10</td></tr><tr><td><strong>SOFTWARE RELEASE</strong></td><td>EXPERIMENTAL</td></tr><tr><td><strong>PRODUCTION</strong></td><td>STAGING</td></tr></table></div>
 
 <p align="center">
   
 
   <img src="https://github.com/aura7822/churnce/blob/master/docs/churnce.png" width="1070" height="200">
-<table><tr><td>
+<table align="center"><tr><td>
   
   ### RESOURCES 
   </td><td>
