@@ -4,7 +4,7 @@
 </div>
 
 ### 🗸 Positively stabilizes customer(s) churn on enterprise web applications + a bug bounty posture
-<div align ="center">
+<div align ="left">
 <table><tr><td><strong>SOFTWARE VERSION</strong></td><td>3.7.10</td></tr><tr><td><strong>SOFTWARE RELEASE</strong></td><td>EXPERIMENTAL</td></tr><tr><td><strong>PRODUCTION</strong></td><td>STAGING</td></tr></table></div>
 
 <p align="center">
