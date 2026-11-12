@@ -1,0 +1,42 @@
+# syntax=docker/dockerfile:1
+# Production image for the Churnce API on its own (no bundled database): for Neon, Render, Railway, Fly.io or any container host.
+#   docker build -f backend/Dockerfile.prod -t churnce-api backend
+#   docker run --env-file .env -p 8000:8000 churnce-api
+# The local-development image (with Postgres via compose) stays in backend/Dockerfile.
+
+# ── Stage 1: build wheels so the runtime image carries no compilers or pip cache ──
+FROM python:3.12-slim AS builder
+ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+WORKDIR /build
+COPY requirements.txt .
+# pytest is a test-only dependency; keep it out of the runtime image.
+RUN grep -viE '^pytest' requirements.txt > requirements.runtime.txt \
+ && pip wheel --wheel-dir /wheels -r requirements.runtime.txt
+
+# ── Stage 2: runtime ──
+FROM python:3.12-slim AS runtime
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PORT=8000 \
+    APP_ENV=production \
+    SEED_DEMO=false
+
+WORKDIR /srv
+COPY --from=builder /wheels /wheels
+RUN pip install --no-cache-dir --no-index --find-links=/wheels /wheels/* && rm -rf /wheels
+
+COPY app ./app
+COPY seed_data ./seed_data
+
+RUN useradd --create-home --uid 10001 churnce && chown -R churnce:churnce /srv
+USER churnce
+
+EXPOSE 8000
+
+# /healthz answers without touching the database; the Backend logs page shows the database ping.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
+  CMD python -c "import os,urllib.request;urllib.request.urlopen('http://127.0.0.1:%s/healthz' % os.environ.get('PORT','8000'), timeout=4)"
+
+# One worker on purpose: the review-gate scheduler runs in-process. Hosts that inject $PORT (Render, Railway, Heroku-style) are honoured.
+# --proxy-headers lets rate limiting see the real client IP behind the platform's TLS proxy.
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --proxy-headers --forwarded-allow-ips='*' --no-server-header"]

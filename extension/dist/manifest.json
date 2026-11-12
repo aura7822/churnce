@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Churnce Observer",
+  "description": "Consent-based, real-time friction signals from websites you own or are authorised to monitor. No keystrokes, no form values, no cookie values.",
+  "version": "1.2.0",
+  "minimum_chrome_version": "120",
+  "permissions": [
+    "storage",
+    "scripting",
+    "alarms"
+  ],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Churnce Observer",
+    "default_popup": "popup.html"
+  },
+  "options_page": "settings.html",
+  "optional_permissions": [
+    "cookies"
+  ]
+}

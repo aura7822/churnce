@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Churnce Observer</title><link rel="stylesheet" href="ui.css"><style>body{width:min(360px,100vw);min-height:0}main{padding:0;gap:0}.pop-top{background:var(--moss);color:#fdf3e4;padding:14px;display:flex;align-items:center;gap:12px}.pop-top h1{color:#fdf3e4}.pop-top .note{color:#d9e5dd}.pop-body{padding:12px;display:grid;gap:10px}.site-row{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--well);padding:8px 10px;flex-wrap:wrap}.pop-foot{padding:0 12px 12px;display:grid;gap:8px}</style></head>
+<body class="loading"><div class="load-bar" aria-hidden="true"><i></i></div>
+<main>
+  <div class="pop-top"><span class="logo" style="width:36px;height:36px;background:var(--light);color:var(--moss);display:grid;place-items:center;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></span><div><h1>Churnce Observer</h1><p class="note"><i class="led" id="led"></i><span id="stateText">Off</span> · <span id="rtt">ping – ms</span></p></div></div>
+  <div class="pop-body">
+    <div class="row"><b>Monitoring</b><button id="toggle" class="accent">Turn on</button></div>
+    <p id="sites" class="note"></p>
+    <div id="siteList" class="stack"></div>
+    <p id="status" class="note"></p>
+    <p id="queue" class="note"></p>
+  </div>
+  <div class="pop-foot"><button id="settings" class="secondary">Settings, consent and plans</button><p class="note">Only sites you authorise are observed. No keystrokes, passwords or form contents are collected.</p></div>
+</main><script type="module" src="popup.js"></script></body></html>

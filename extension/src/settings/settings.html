@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Churnce Observer settings</title><link rel="stylesheet" href="ui.css"></head>
+<body class="loading">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5M9 8V2M15 8V2M18 8v5a6 6 0 0 1-12 0V8z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m11 12 10-10M17 6l3 3M14 9l2 2"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 17l.8 2.2L22 20l-2.2.8L19 23l-.8-2.2L16 20l2.2-.8z"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.9 10.9 0 0 1 12 19C6 19 2 12 2 12a18 18 0 0 1 5.1-5.9M9.9 5.1A9.7 9.7 0 0 1 12 5c6 0 10 7 10 7a18 18 0 0 1-2.2 3.2M1 1l22 22M14.1 14.1a3 3 0 0 1-4.2-4.2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+    <symbol id="i-timer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></symbol>
+  </defs>
+</svg>
+<div class="load-bar" aria-hidden="true"><i></i></div>
+<main class="shell">
+  <div class="topbar">
+    <div class="brand"><span class="logo"><svg><use href="#i-logo"/></svg></span><div><h1>Churnce Observer</h1><p class="note">Consent-based, real-time website signals</p></div></div>
+    <ol class="flow" id="flow" aria-label="Setup progress">
+      <li data-step="connect">1 · Connect</li><li data-step="consent">2 · Owner consent</li><li data-step="authorise">3 · Authorise site</li><li data-step="creds">4 · Credentials</li><li data-step="signin">5 · Sign in</li><li data-step="plan">6 · Plan</li>
+    </ol>
+  </div>
+
+  <div class="grid">
+    <form class="card s7" id="conn">
+      <div class="head"><span class="ico"><svg><use href="#i-plug"/></svg></span><h2>Connect to Churnce</h2><span class="step-no">STEP 1</span></div>
+      <div class="cols-2">
+        <label>Backend URL<input id="backend" type="url" required placeholder="https://churnce.example.com"></label>
+        <label>Ingest key<input id="key" type="password" autocomplete="off" placeholder="chn_live_…"></label>
+      </div>
+      <label>Dashboard URL<input id="dashUrl" type="url" placeholder="https://dashboard.yourcompany.com"></label>
+      <div class="row"><button type="submit"><svg><use href="#i-plug"/></svg>Save connection</button><span class="note">The key can only submit events. It cannot read data or call AI services.</span></div>
+    </form>
+
+    <section class="card s5" id="statusCard" aria-label="Connection status">
+      <div class="head"><span class="ico"><svg><use href="#i-globe"/></svg></span><h2>Live status</h2></div>
+      <div class="row"><span><i class="led" id="led"></i><b id="stateText">Not connected</b></span><span class="chip" id="rttChip">ping – ms</span></div>
+      <p class="note" id="statusLine">Nothing sent yet.</p>
+      <label class="check"><input id="monitorToggle" type="checkbox"> Real-time monitoring on</label>
+    </section>
+
+    <section class="card s7" id="consent" aria-label="Website owner consent">
+      <div class="head"><span class="ico"><svg><use href="#i-shield"/></svg></span><h2>Website owner consent</h2><span class="step-no">STEP 2</span></div>
+      <p class="note">Real-time monitoring only works if you, the website owner, explicitly allow the access below, before any site can be authorised. Nothing personal or sensitive is ever read.</p>
+      <div id="scopes" class="cols-2"></div>
+      <label class="check"><input id="owner" type="checkbox"> I own this website or am authorised to monitor it, and visitors are informed where the law requires.</label>
+      <div class="row"><div class="row" style="gap:8px"><button type="button" id="grant"><svg><use href="#i-shield"/></svg>Grant permissions</button><button type="button" class="secondary" id="withdraw">Withdraw consent</button></div></div>
+      <p id="consentStatus" class="note" role="status"></p>
+    </section>
+
+    <form class="card s5 lock is-locked" id="auth" aria-label="Authorise a website">
+      <div class="lock-veil" id="authVeil"><b><svg><use href="#i-lock"/></svg>Grant owner consent first</b></div>
+      <div class="head"><span class="ico"><svg><use href="#i-globe"/></svg></span><h2>Authorise a website</h2><span class="step-no">STEP 3</span></div>
+      <label>Website address<input id="origin" required placeholder="https://shop.example.com"></label>
+      <div class="cols-2"><label>Website name<input id="siteName" maxlength="120" autocomplete="off" placeholder="Acme Shop"></label><label>Owner name<input id="ownerName" maxlength="120" autocomplete="off" placeholder="Jane Wanjiku"></label></div>
+      <button type="submit" id="authBtn"><svg><use href="#i-shield"/></svg>Authorise site</button>
+      <div class="progress" id="progress" hidden aria-live="polite">
+        <div class="row"><b id="progTitle">Syncing with the website…</b><span class="chip" id="progPct">0%</span></div>
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progBar"><i></i></div>
+        <ol class="steps" id="progSteps"></ol>
+      </div>
+      <p class="note">Your browser will ask for permission. Only authorise sites you own or are permitted to monitor.</p>
+    </form>
+
+    <section class="card s6 lock is-locked" id="credsCard" aria-label="Generate website ID and password">
+      <div class="lock-veil" id="credsVeil"><b><svg><use href="#i-lock"/></svg>Authorise a site first</b></div>
+      <div class="head"><span class="ico"><svg><use href="#i-key"/></svg></span><h2>Website ID and password</h2><span class="step-no">STEP 4</span></div>
+      <label>Website<select id="credSite"></select></label>
+      <p class="note">Fills in the sign-in card automatically. The password is shown once; only a hash is stored.</p>
+      <div class="row"><button type="button" id="genCreds"><svg><use href="#i-spark"/></svg>Generate ID and password</button></div>
+      <div id="creds" class="creds" hidden aria-live="polite"></div>
+    </section>
+
+    <section class="card s6" id="siteLogin" aria-label="Sign in with a website ID">
+      <div class="head"><span class="ico"><svg><use href="#i-user"/></svg></span><h2>Sign in with a website ID</h2><span class="step-no">STEP 5</span></div>
+      <form id="slForm" class="stack">
+        <label>Website ID<input id="slId" autocomplete="username" placeholder="WS-ABC123" required></label>
+        <label>Password
+          <span class="field"><input id="slPass" type="password" autocomplete="current-password" placeholder="XXXX-XXXX-XXXX" required><button type="button" class="secondary icon" id="peek" aria-label="Show password" aria-pressed="false"><svg><use href="#i-eye"/></svg></button></span>
+        </label>
+        <label>Role <span class="note" id="roleHint" style="text-transform:none;letter-spacing:0">Enter the ID and password first, then choose your role.</span><select id="slRole" disabled></select></label>
+        <div class="row"><button type="submit" id="slBtn" disabled><svg><use href="#i-user"/></svg>Sign in</button><button type="button" class="secondary" id="openDash" hidden>Open dashboard</button></div>
+      </form>
+      <p id="slStatus" class="note" role="status"></p>
+    </section>
+
+    <section class="card s12" id="plans" aria-label="Plans">
+      <div class="head"><span class="ico"><svg><use href="#i-spark"/></svg></span><h2>Plans</h2><span class="step-no">STEP 6</span></div>
+      <div class="plans">
+        <article class="plan"><div class="tier"><h3>Free</h3></div><div class="price">KES 0 <small>/ month</small></div><ul id="freeList"></ul></article>
+        <article class="plan premium"><div class="tier"><h3>Premium</h3><span class="badge">PRO</span></div><div class="price">KES 333 <small>/ month</small></div><ul id="premList"></ul>
+          <div class="trial-box">
+            <label style="color:rgba(255,255,255,.85)">Website<select id="trialSite"></select></label>
+            <div id="trialState" class="note" aria-live="polite">Authorise a website and generate its ID to start the trial.</div>
+            <div class="timer" id="timer" hidden>72:00:00</div>
+            <button type="button" id="startTrial" disabled><svg><use href="#i-timer"/></svg>Start free trial · 72 hours</button>
+          </div>
+        </article>
+      </div>
+      <p class="note">The trial lasts 72 hours per website ID and can be used once. Premium features stay on for that website until the timer ends. Billing is not connected yet, so nothing is charged.</p>
+    </section>
+
+  </div>
+  <p id="msg" role="status" class="note"></p>
+</main><script type="module" src="settings.js"></script></body></html>
