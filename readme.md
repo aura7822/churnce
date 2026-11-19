@@ -3,6 +3,8 @@
 # LIFE CYCLE MARKETING PRESENTS : CHURNCE®
 </div>
 
+im FOSS
+
 ### 🗸 Positively stabilizes customer(s) churn on enterprise web applications + a bug bounty posture
 <div align ="left">
 <table>
