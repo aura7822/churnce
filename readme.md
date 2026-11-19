@@ -3,7 +3,7 @@
 # LIFE CYCLE MARKETING PRESENTS : CHURNCE®
 </div>
 
-im FOSS
+
 
 ### 🗸 Positively stabilizes customer(s) churn on enterprise web applications + a bug bounty posture
 <div align ="left">
@@ -12,6 +12,9 @@ im FOSS
 <tr><td><strong>SOFTWARE RELEASE</strong></td><td>EXPERIMENTAL</td></tr>
 <tr><td><strong>PRODUCTION</strong></td><td>STAGING</td></tr>
 </table>
+
+### Its FOSS
+
 </div>
 <p align="center">
 <img src="https://github.com/aura7822/churnce/blob/master/docs/churnce.png" width="1070" height="200">
